@@ -1,0 +1,31 @@
+version: 0.1
+log:
+  level: info
+  formatter: text
+  fields:
+    service: registry
+    environment: production
+loglevel: info
+storage:
+  s3:
+    accesskey: key
+    secretkey: key
+    region: us-east-1
+    regionendpoint: https://registry.host
+    bucket: docker-registry-data
+    encrypt: false
+    secure: true
+    v4auth: true
+    rootdirectory: /
+  delete:
+    enabled: true
+  maintenance:
+    uploadpurging:
+      enabled: true
+      age: 168h
+      interval: 24h
+      dryrun: false
+    readonly:
+      enabled: false
+http:
+  addr: :5000

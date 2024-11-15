@@ -1,0 +1,32 @@
+services:
+  registry:
+    image: registry:2.8
+    restart: always
+    volumes:
+      - ./config.yml:/etc/docker/registry/config.yml
+      - ./auth:/auth
+    environment:
+      REGISTRY_HTTP_HEADERS_Access-Control-Allow-Origin: '[https://webui.host]'
+      REGISTRY_HTTP_HEADERS_Access-Control-Allow-Methods: '[HEAD,GET,OPTIONS,DELETE]'
+      REGISTRY_HTTP_HEADERS_Access-Control-Allow-Credentials: '[true]'
+      REGISTRY_HTTP_HEADERS_Access-Control-Allow-Headers: '[Authorization,Accept,Cache-Control]'
+      REGISTRY_HTTP_HEADERS_Access-Control-Expose-Headers: '[Docker-Content-Digest]'
+      REGISTRY_STORAGE_DELETE_ENABLED: 'true'
+      REGISTRY_AUTH: htpasswd
+      REGISTRY_AUTH_HTPASSWD_REALM: "Registry Realm"
+      REGISTRY_AUTH_HTPASSWD_PATH: /auth/htpasswd
+
+  registry-webui:
+    image: joxit/docker-registry-ui:2.5
+    environment:
+      SINGLE_REGISTRY: true
+      REGISTRY_TITLE: Docker Registry
+      DELETE_IMAGES: true
+      SHOW_CONTENT_DIGEST: true
+      REGISTRY_URL: https://registry.host
+      SHOW_CATALOG_NB_TAGS: true
+      CATALOG_MIN_BRANCHES: 1
+      CATALOG_MAX_BRANCHES: 1
+      TAGLIST_PAGE_SIZE: 100
+      REGISTRY_SECURED: false
+      CATALOG_ELEMENTS_LIMIT: 1000
